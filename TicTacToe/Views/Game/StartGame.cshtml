@@ -1,0 +1,61 @@
+﻿@model TicTacToe.Models.Game
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/style.css" rel="stylesheet"/>
+    <script src="~/Content/bootstrap.min.css"></script>
+</head>
+<body style="text-align:center; margin-top:5px;">
+    <div id="game-board">
+        <div id="game-background"></div>
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="game-row">
+                @for (int j = 0; j < 3; j++)
+                {
+                    <div class="game-cell">
+                        @if (Model.GameBoard[i * 3 + j] == ' ' && !Model.IsGameOver())
+                        {
+                            <form method="post" class="centered">
+                                <input type="hidden" value="@(i * 3 + j)" name="square" />
+                                <button class="white-btn">@Model.GameBoard[i * 3 + j]</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="centered">
+                                <span>@Model.GameBoard[i * 3 + j]</span>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <p>
+        @if (Model.IsGameOver() && Model.Winner() != ' ')
+        {
+            <p>@Model.Winner() wins!</p>
+        }
+        else if (Model.IsGameOver())
+        {
+            <p>Draw!</p>
+        }
+         
+    </p>
+    @if (Model.IsGameOver() || Model.Winner() != ' ')
+    {
+        <form method="post" style="margin-top: 50px;">
+            <input type="hidden" value="-1" name="square" />
+            <button>Reset!</button>
+        </form>
+    }
+</body>
+</html>
